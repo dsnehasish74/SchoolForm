@@ -63,8 +63,8 @@ const MyDocument = () => {
   };
   useEffect(() => {
     db.collection("Notes")
-      .get()
-      .then((querySnapshot) => {
+      .orderBy("Date")
+      .onSnapshot((querySnapshot) => {
         console.log(querySnapshot);
         let result = [];
         var i = 1;
@@ -122,6 +122,28 @@ const MyDocument = () => {
             "Last Class Attend": doc.data()["Last Class Attend"],
             "School Leaving Cert. No": doc.data()["School Leaving Cert. No"],
             "Issue Date": doc.data()["Issue Date"],
+            "Whether Joint family": doc.data()["Whether Joint family"],
+            "Total Family Member": doc.data()["Total Family Member"],
+            "No of elder member": doc.data()["No of elder member"],
+            "No of Younger member": doc.data()["No of Younger member"],
+            "How impish the student is":
+              doc.data()["How impish the student is"],
+            "Special Habbits": doc.data()["Special Habbits"],
+            "particular Disease": doc.data()["particular Disease"],
+            "Parrent Particular Disease":
+              doc.data()["Parrent Particular Disease"],
+            "primary immunizations": doc.data()["primary immunizations"],
+            "Belive in which medical system":
+              doc.data()["Belive in which medical system"],
+            "Do you need school vehicle":
+              doc.data()["Do you need school vehicle"],
+            "why you want to admit": doc.data()["why you want to admit"],
+            "Student's Photo": doc.data()["Student's Photo"],
+            "Father's Photo": doc.data()["Father's Photo"],
+            "Mother's Photo": doc.data()["Mother's Photo"],
+            Date: doc.data()["Date"],
+            "Is Doc Submitted:": doc.data()["Is Doc Submitted:"],
+            id: doc.id,
           };
           result.push(x);
           i++;
@@ -131,14 +153,46 @@ const MyDocument = () => {
         console.log("hi", result);
       });
   }, []);
+  const onSubmit = (id) => {
+    console.log(id);
+    db.collection("Notes").doc(id).update({
+      "Is Doc Submitted:": "Yes",
+    });
+  };
+  const onUnSubmit = (id) => {
+    db.collection("Notes").doc(id).update({
+      "Is Doc Submitted:": "No",
+    });
+  };
   return (
-    <div className="Body">
-      <h1>hi</h1>
+    <div className="container">
+      <h1>Total {data.length} responses</h1>
       <JsonToExcel
         title="Download as Excel"
         data={data}
         fileName="sample-file"
       />
+      <div style={{ width: "100%", height: "100px" }}></div>
+      {
+        <div>
+          {data.map((e) => {
+            return (
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <p>{e["Date"]}</p>
+                <p>{e["Name"]}</p>
+                <p>{e["Father's Name"]}</p>
+                {e["Is Doc Submitted:"] == "No" ? (
+                  <button onClick={() => onSubmit(e.id)}>submitted</button>
+                ) : (
+                  <button onClick={() => onUnSubmit(e.id)}>
+                    not Submitted
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      }
     </div>
   );
 };

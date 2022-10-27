@@ -74,9 +74,46 @@ iframe{
 .accordion-header{
     margin-bottom: 16px;
 }
+.signature{
+    width: 300px;
+    height: 60px;
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items :center;
+    padding-left: 8px;
+    color: lightgrey;
+}
+.s{
+    width: 300px;
+    padding-left: 8px;
+    color: lightgrey;
+
+}
+
+.uploadPic{
+    width: 153px;
+    height: 153px;
+}
+.signaturep{
+    height: 10px;
+    font-size: 16px;
+}
 .EditButton{
     margin-left: 16px;
     margin-right: 16px;
+}
+.uploadPicd{
+    width:153px;
+    height: 153px;
+    border: 1px dashed lightgrey;
+}
+
+.error{
+    margin-top: 16px;
+    margin-bottom: 16px;
+    color: red;
 }
 @media screen and (max-width: 720px) {
     .accordion-item{

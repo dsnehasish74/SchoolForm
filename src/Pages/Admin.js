@@ -6,8 +6,8 @@ import Logo from "../images/Name2.png";
 import Accordion from "react-bootstrap/Accordion";
 import ReactToPrint, { PrintContextConsumer } from "react-to-print";
 import TextInput2 from "../Components/TextInput2/TextInput2.js";
-import { auth, db } from "../firebase.js";
-
+import { auth, db, storage } from "../firebase.js";
+import FileUploader from "react-firebase-file-uploader";
 const Admin = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -59,14 +59,226 @@ const Admin = () => {
   const [lastClassAttend, setLastClassAttend] = useState("");
   const [schoolLeavingCert, setSchoolLeavingCert] = useState("");
   const [issueDate, setIssueDate] = useState("");
+  const [isJoinFamily, setIsJoinFamily] = useState("");
+  const [totalMember, setTotalMember] = useState("");
+  const [youngerMember, setYoungerMember] = useState("");
+  const [elderMember, setElderMember] = useState("");
+  const [impish, setImpish] = useState(0);
+  const [specialHabbits, setSpecialHabbits] = useState("");
+  const [particularDisease, setParticularDisease] = useState("");
+  const [parrentDisease, setParrentDisease] = useState("");
+  const [primaryImmunization, setPrimaryImmunization] = useState(0);
+  const [medicalSystem, setMedicalSystem] = useState(0);
+  const [needSchoolVehical, setNeedSchoolVehical] = useState(0);
+  const [whyAdmit, setWhyAdmit] = useState("");
+
+  const [studentPicture, setStudentPicture] = useState("");
+  const [fatherPicture, setFatherPicture] = useState("");
+  const [motherPicture, setMotherPicture] = useState("");
+
+  const [admisonYear, setAdmisonYear] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [pageState, setPageState] = useState(1);
+  const [error, setError] = useState(0);
+  const [personErr, setPersonErr] = useState([]);
+  const [contactErr, setContactErr] = useState([]);
+  const [parrentErr, setParrentErr] = useState([]);
+  const [otherErr, setOtherErr] = useState([]);
 
   const onPreviewSubmit = () => {
-    setPageState(2);
+    let err = [];
+    let err1 = [];
+    let err2 = [];
+    let err3 = [];
+    let err4 = [];
+    if (name.length == 0) {
+      err.push("Student's Name");
+    }
+    if (admisonYear.length == 0) {
+      err.push("Admission Year");
+    }
+    if (age.length == 0) {
+      err.push("Date of Birth");
+    }
+    if (gender == 0) {
+      err.push("Date of Birth");
+    }
+    if (caste == 0) {
+      err.push("Caste");
+    }
+    if (subCaste.length == 0) {
+      err.push("Sub-Caste");
+    }
+    if (religion == 0) {
+      err.push("Religion");
+    }
+    if (bloodGroup.length == 0) {
+      err.push("Blood Group");
+    }
+    if (nationality.length == 0) {
+      err.push("Nationality");
+    }
+    if (motherLanguage.length == 0) {
+      err.push("Mother Toungue");
+    }
+    if (secondLanguage.length == 0) {
+      err.push("2n Language");
+    }
+    if (thirdLanguage.length == 0) {
+      err.push("Third Language");
+    }
+    if (isBpl == 0) {
+      err.push("BPL Status");
+    }
+    if (identification.length == 0) {
+      err.push("Identification Mark");
+    }
+    setPersonErr(err);
+
+    if (houseNo.length == 0) {
+      err1.push("House No/Village/Para/Road");
+    }
+    if (postOffice.length == 0) {
+      err1.push("Post Office");
+    }
+    if (policeStation.length == 0) {
+      err1.push("Police Station");
+    }
+    if (block.length == 0) {
+      err1.push("Block/Municipalty");
+    }
+    if (district.length == 0) {
+      err1.push("District");
+    }
+    if (pin.length == 0) {
+      err1.push("Pin");
+    }
+    if (mobileNo.length == 0) {
+      err1.push("Primary Mobile");
+    }
+    if (email.length == 0) {
+      err1.push("Email id");
+    }
+
+    setContactErr(err1);
+
+    if (
+      fatherName.length == 0 ||
+      motherName.length == 0 ||
+      guardianName.length == -0
+    ) {
+      err2.push("Name");
+    }
+    if (fatherEducation.length == 0 || motherEducation.length == 0) {
+      err2.push("Education");
+    }
+    if (
+      fatherOccupation.length == 0 ||
+      motherOccupation.length == 0 ||
+      guardianOccupation.length == 0
+    ) {
+      err2.push("Occupation");
+    }
+    if (fatherOffice.length == 0 || motherOffice.length == 0) {
+      err2.push("Name of Office/Business & Address");
+    }
+    if (
+      fatherContactNo.length == 0 ||
+      motherContactNo.length == 0 ||
+      guardianContactNo.length == 0
+    ) {
+      err2.push("Contact No");
+    }
+    if (
+      fatherAnnualIncome.length == 0 ||
+      motherAnnualIncome.length == 0 ||
+      guardianAnnualIncome.length == 0
+    ) {
+      err2.push("Annual Income");
+    }
+    if (timeByFather.length == 0 || timeByMother.length == 0) {
+      err2.push("Time give in a day to the child");
+    }
+    setParrentErr(err2);
+
+    if (isJoinFamily == 0) {
+      err3.push("Whether joint family");
+    }
+    if (totalMember == 0) {
+      err3.push("Total member of the family");
+    }
+    if (elderMember.length == 0) {
+      err3.push("No of elder member");
+    }
+    if (youngerMember.length == 0) {
+      err3.push("No of Younger member");
+    }
+    if (primaryImmunization == 0) {
+      err3.push(
+        "Whether the students has been given primary immunizations/antidote"
+      );
+    }
+    if (whyAdmit.length == 0) {
+      err3.push(
+        "Why do you want to admit your child in Nivedita Shishu Tirtha?"
+      );
+    }
+    if (
+      studentPicture.length == 0 ||
+      fatherPicture.length == 0 ||
+      motherPicture.length == 0
+    ) {
+      err3.push("photo");
+    }
+    setOtherErr(err3);
+    if (
+      err1.length != 0 ||
+      err2.length != 0 ||
+      err3.length != 0 ||
+      err.length != 0
+    ) {
+      setError(1);
+    } else {
+      setError(0);
+      setPageState(2);
+    }
   };
 
+  const viewPdf1 = (filename) => {
+    storage
+      .ref("images")
+      .child(filename)
+      .getDownloadURL()
+      .then((url) => {
+        console.log(url);
+        setStudentPicture(url);
+      });
+  };
+
+  const viewPdf2 = (filename) => {
+    storage
+      .ref("images")
+      .child(filename)
+      .getDownloadURL()
+      .then((url) => {
+        setFatherPicture(url);
+      });
+  };
+
+  const viewPdf3 = (filename) => {
+    storage
+      .ref("images")
+      .child(filename)
+      .getDownloadURL()
+      .then((url) => {
+        setMotherPicture(url);
+      });
+  };
+  const onEdit = () => {
+    setPageState(1);
+  };
   const fromSubmitCall = () => {
     const res = {
       Name: name,
@@ -128,6 +340,25 @@ const Admin = () => {
       "Last Class Attend": lastClassAttend,
       "School Leaving Cert. No": schoolLeavingCert,
       "Issue Date": issueDate,
+      "Whether Joint family": isJoinFamily == 1 ? "Yes" : "No",
+      "Total Family Member": totalMember,
+      "No of elder member": elderMember,
+      "No of Younger member": youngerMember,
+      "How impish the student is":
+        impish == 1 ? "Too much" : impish == 2 ? "Normal" : "Not At all",
+      "Special Habbits": specialHabbits,
+      "particular Disease": particularDisease,
+      "Parrent Particular Disease": parrentDisease,
+      "primary immunizations": primaryImmunization == 1 ? "Yes" : "No",
+      "Belive in which medical system":
+        medicalSystem == 1 ? "Homeopathy" : "Allopathy",
+      "Do you need school vehicle": needSchoolVehical == 1 ? "Yes" : "No",
+      "why you want to admit": whyAdmit,
+      "Student's Photo": studentPicture,
+      "Father's Photo": fatherPicture,
+      "Mother's Photo": motherPicture,
+      Date: new Date().toLocaleDateString(),
+      "Is Doc Submitted:": "No",
     };
     setIsLoading(true);
     console.log(res);
@@ -166,6 +397,17 @@ const Admin = () => {
                     value={name}
                     setValue={setName}
                     placeholder="Enter Student's Name"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col col-12">
+                  <TextInput
+                    lable="Admission Year"
+                    type="text"
+                    value={admisonYear}
+                    setValue={setAdmisonYear}
+                    placeholder="Enter Admission Year"
                   />
                 </div>
               </div>
@@ -786,11 +1028,11 @@ const Admin = () => {
               <div className="row">
                 <div className="col col-12">
                   <TextInput
-                    lable="Any need of private tution at initial stage for childre?"
+                    lable="Any need of private tution at initial stage for children?"
                     type="text"
                     value={needofTutor}
                     setValue={setNeedofTutor}
-                    placeholder="Any need of private tution at initial stage for childre?"
+                    placeholder="Any need of private tution at initial stage for children?"
                   />
                 </div>
               </div>
@@ -915,6 +1157,402 @@ const Admin = () => {
               </div>
             </div>
           </div>
+
+          <div class="accordion nextSection" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                Other Details
+              </h2>
+              {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! First Row !!!!!!!!!!!!!!!!!*/}
+              <div className="row">
+                <div className="col col-12 col-md-6">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    Whether Joint family
+                  </label>
+                  <div className="CheckBoxes">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio12"
+                        id="exampleRadios1"
+                        value="option"
+                        onChange={(e) => {
+                          setIsJoinFamily(1);
+                        }}
+                        checked={isJoinFamily == 1}
+                      />
+                      <label class="form-check-label" for="exampleRadios1">
+                        Yes
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio12"
+                        id="exampleRadios2"
+                        value="option2"
+                        onChange={(e) => {
+                          setIsJoinFamily(2);
+                        }}
+                        checked={isJoinFamily == 2}
+                      />
+                      <label class="form-check-label" for="exampleRadios2">
+                        No
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div className="col col-12 col-md-6">
+                  <TextInput
+                    lable="Total Member of the family"
+                    type="text"
+                    value={totalMember}
+                    setValue={setTotalMember}
+                    placeholder="Enter total member of the family"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col col-12 col-md-6">
+                  <TextInput
+                    lable="No of elder member of the family"
+                    type="text"
+                    value={elderMember}
+                    setValue={setElderMember}
+                    placeholder="Enter no of elder member of the family"
+                  />
+                </div>
+                <div className="col col-12 col-md-6">
+                  <TextInput
+                    lable="No of younger member of the family"
+                    type="text"
+                    value={youngerMember}
+                    setValue={setYoungerMember}
+                    placeholder="Enter no of younger member of the family"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col col-12">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    How impish do you think the student is?
+                  </label>
+                  <div className="CheckBoxes">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio13"
+                        id="exampleRadios1"
+                        value="option"
+                        onChange={(e) => {
+                          setImpish(1);
+                        }}
+                        checked={impish == 1}
+                      />
+                      <label class="form-check-label" for="exampleRadios1">
+                        Too much
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio13"
+                        id="exampleRadios2"
+                        value="option2"
+                        onChange={(e) => {
+                          setImpish(2);
+                        }}
+                        checked={impish == 2}
+                      />
+                      <label class="form-check-label" for="exampleRadios2">
+                        Normal
+                      </label>
+                    </div>
+
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio13"
+                        id="exampleRadios2"
+                        value="option2"
+                        onChange={(e) => {
+                          setImpish(3);
+                        }}
+                        checked={impish == 3}
+                      />
+                      <label class="form-check-label" for="exampleRadios2">
+                        Not at all
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col col-12 ">
+                  <TextInput
+                    lable="Wheather the student has any special habits"
+                    type="text"
+                    value={specialHabbits}
+                    setValue={setSpecialHabbits}
+                    placeholder="Enter wheather the student has any special habits"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col col-12">
+                  <TextInput
+                    lable="Wheather the student has any particular disease"
+                    type="text"
+                    value={particularDisease}
+                    setValue={setParticularDisease}
+                    placeholder="Enter wheather the student has any special disease"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col col-12">
+                  <TextInput
+                    lable="Wheather the parrent has any particular disease"
+                    type="text"
+                    value={parrentDisease}
+                    setValue={setParrentDisease}
+                    placeholder="Enter wheather the parrent has any special disease"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col col-12">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    Whether the students has been given primary
+                    immunizations/antidote
+                  </label>
+                  <div className="CheckBoxes">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio14"
+                        id="exampleRadios1"
+                        value="option"
+                        onChange={(e) => {
+                          setPrimaryImmunization(1);
+                        }}
+                        checked={primaryImmunization == 1}
+                      />
+                      <label class="form-check-label" for="exampleRadios1">
+                        Yes
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio14"
+                        id="exampleRadios2"
+                        value="option2"
+                        onChange={(e) => {
+                          setPrimaryImmunization(2);
+                        }}
+                        checked={primaryImmunization == 2}
+                      />
+                      <label class="form-check-label" for="exampleRadios2">
+                        No
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col col-12">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    Belive in which medical system
+                  </label>
+                  <div className="CheckBoxes">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio15"
+                        id="exampleRadios1"
+                        value="option"
+                        onChange={(e) => {
+                          setMedicalSystem(1);
+                        }}
+                        checked={medicalSystem == 1}
+                      />
+                      <label class="form-check-label" for="exampleRadios1">
+                        Homeopathy
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio15"
+                        id="exampleRadios2"
+                        value="option2"
+                        onChange={(e) => {
+                          setMedicalSystem(2);
+                        }}
+                        checked={medicalSystem == 2}
+                      />
+                      <label class="form-check-label" for="exampleRadios2">
+                        Allopathy
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col col-12">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    Do you need school vehicle
+                  </label>
+                  <div className="CheckBoxes">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio16"
+                        id="exampleRadios1"
+                        value="option"
+                        onChange={(e) => {
+                          setNeedSchoolVehical(1);
+                        }}
+                        checked={needSchoolVehical == 1}
+                      />
+                      <label class="form-check-label" for="exampleRadios1">
+                        Yes
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="radio16"
+                        id="exampleRadios2"
+                        value="option2"
+                        onChange={(e) => {
+                          setNeedSchoolVehical(2);
+                        }}
+                        checked={needSchoolVehical == 2}
+                      />
+                      <label class="form-check-label" for="exampleRadios2">
+                        No
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col col-12">
+                  <label
+                    className="form-label"
+                    for="exampleFormControlTextarea3"
+                  >
+                    Why do you want to admit your child in Nivedita Shishu
+                    Tirtha?
+                  </label>
+                  <textarea
+                    class="form-control"
+                    id="exampleFormControlTextarea3"
+                    rows="7"
+                    value={whyAdmit}
+                    onChange={(e) => setWhyAdmit(e.target.value)}
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion nextSection" id="accordionExample">
+            <div class="accordion-item">
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {studentPicture ? (
+                    <img src={studentPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+                <div className="col2 col-12 col-md-6">
+                  <div className="s">
+                    <label style={{ paddingBottom: "16px" }}>
+                      Upload Student's Picture
+                    </label>
+                    <FileUploader
+                      accept="image/*"
+                      name="avatar"
+                      randomizeFilename
+                      storageRef={storage.ref("images")}
+                      onUploadSuccess={viewPdf1}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {fatherPicture ? (
+                    <img src={fatherPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+                <div className="col2 col-12 col-md-6">
+                  <div className="s">
+                    <label style={{ paddingBottom: "16px" }}>
+                      Upload Father's Picture
+                    </label>
+                    <FileUploader
+                      accept="image/*"
+                      name="avatar"
+                      randomizeFilename
+                      storageRef={storage.ref("images")}
+                      onUploadSuccess={viewPdf2}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {motherPicture ? (
+                    <img src={motherPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+                <div className="col2 col-12 col-md-6">
+                  <div className="s">
+                    <label style={{ paddingBottom: "16px" }}>
+                      Upload Mothers's Picture
+                    </label>
+                    <FileUploader
+                      accept="image/*"
+                      name="avatar"
+                      randomizeFilename
+                      storageRef={storage.ref("images")}
+                      onUploadSuccess={viewPdf3}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="accordion nextSection" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingOne">
@@ -938,6 +1576,45 @@ const Admin = () => {
             </div>
           </div>
 
+          {error != 0 && (
+            <div className="error">
+              <h3 className="errH">Error!! Fill below files</h3>
+
+              {personErr.length != 0 && (
+                <div>
+                  <h5>Peronal Details</h5>
+                  {personErr.map((e) => {
+                    return <p>{e}</p>;
+                  })}
+                </div>
+              )}
+              {contactErr.length != 0 && (
+                <div>
+                  <h5>Contact Details</h5>
+                  {contactErr.map((e) => {
+                    return <p>{e}</p>;
+                  })}
+                </div>
+              )}
+              {parrentErr.length != 0 && (
+                <div>
+                  <h5>Parrent Details</h5>
+                  {parrentErr.map((e) => {
+                    return <p>{e}</p>;
+                  })}
+                </div>
+              )}
+              {otherErr.length != 0 && (
+                <div>
+                  <h5>Other Details</h5>
+                  {otherErr.map((e) => {
+                    return <p>{e}</p>;
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="submitContainer">
             <button
               type="submit"
@@ -959,6 +1636,13 @@ const Admin = () => {
           style={{ paddingBottom: "200px" }}
         >
           <img src={Logo} alt="Logo" className="logo" />
+          <div>
+            <h2 style={{ textAlign: "center" }}>Admission Form</h2>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <p>Admission Year : {admisonYear}</p>
+              <p>Date: {new Date().toLocaleDateString()}</p>
+            </div>
+          </div>
           <div class="accordion" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingOne">
@@ -1420,11 +2104,11 @@ const Admin = () => {
               <div className="row">
                 <div className="col2 col-12">
                   <TextInput2
-                    lable="Any need of private tution at initial stage for childre?"
+                    lable="Any need of private tution at initial stage for children?"
                     type="text"
                     value={needofTutor}
                     setValue={setNeedofTutor}
-                    placeholder="Any need of private tution at initial stage for childre?"
+                    placeholder="Any need of private tution at initial stage for children?"
                   />
                 </div>
               </div>
@@ -1551,6 +2235,175 @@ const Admin = () => {
           <div class="accordion nextSection" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingOne">
+                Other Details
+              </h2>
+              {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! First Row !!!!!!!!!!!!!!!!!*/}
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  <label
+                    for="exampleFormControlInput1"
+                    class="form-label"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    Whether Joint family :{" "}
+                  </label>
+                  <label style={{ marginLeft: "8px" }}>
+                    {" "}
+                    {isJoinFamily == 1 ? " Yes" : " No"}
+                  </label>
+                </div>
+                <div className="col2 col-12 col-md-6">
+                  <TextInput2
+                    lable="Total Member of the family"
+                    type="text"
+                    value={totalMember}
+                    setValue={setTotalMember}
+                    placeholder="Enter total member of the family"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  <TextInput2
+                    lable="No of elder member of the family"
+                    type="text"
+                    value={elderMember}
+                    setValue={setElderMember}
+                    placeholder="Enter no of elder member of the family"
+                  />
+                </div>
+                <div className="col2 col-12 col-md-6">
+                  <TextInput2
+                    lable="No of younger member of the family"
+                    type="text"
+                    value={youngerMember}
+                    setValue={setYoungerMember}
+                    placeholder="Enter no of younger member of the family"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <label
+                    for="exampleFormControlInput1"
+                    class="form-label"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    How impish do you think the student is? :{" "}
+                  </label>
+                  <label style={{ marginLeft: "8px" }}>
+                    {impish == 1
+                      ? " Too much"
+                      : impish == 2
+                      ? " Normal"
+                      : " Not at all"}
+                  </label>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12 ">
+                  <TextInput2
+                    lable="Wheather the student has any special habits"
+                    type="text"
+                    value={specialHabbits}
+                    setValue={setSpecialHabbits}
+                    placeholder="Enter wheather the student has any special habits"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <TextInput2
+                    lable="Wheather the student has any particular disease"
+                    type="text"
+                    value={particularDisease}
+                    setValue={setParticularDisease}
+                    placeholder="Enter wheather the student has any special disease"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <TextInput2
+                    lable="Wheather the parrent has any particular disease"
+                    type="text"
+                    value={parrentDisease}
+                    setValue={setParrentDisease}
+                    placeholder="Enter wheather the parrent has any special disease"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <label
+                    for="exampleFormControlInput1"
+                    class="form-label"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    Whether the students has been given primary
+                    immunizations/antidote :{" "}
+                  </label>
+                  <label style={{ marginLeft: "8px" }}>
+                    {primaryImmunization == 1 ? "Yes" : "No"}
+                  </label>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <label
+                    for="exampleFormControlInput1"
+                    class="form-label"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    Belive in which medical system :{" "}
+                  </label>
+                  <label style={{ marginLeft: "8px" }}>
+                    {medicalSystem == 1 ? "Homeopathy" : "Allopathy"}
+                  </label>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <label
+                    for="exampleFormControlInput1"
+                    class="form-label"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    Do you need school vehicle :{" "}
+                  </label>
+                  <label style={{ marginLeft: "8px" }}>
+                    {needSchoolVehical == 1 ? "Yes" : "No"}
+                  </label>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <label
+                    className="form-label"
+                    for="exampleFormControlTextarea3"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    Why do you want to admit your child in Nivedita Shishu
+                    Tirtha ? :{" "}
+                  </label>
+                  <lable style={{ marginLeft: "8px" }}>{" " + whyAdmit}</lable>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion nextSection" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
                 Declaration
               </h2>
               {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! First Row !!!!!!!!!!!!!!!!!*/}
@@ -1570,6 +2423,185 @@ const Admin = () => {
               </p>
             </div>
           </div>
+
+          <div class="accordion nextSection" id="accordionExample">
+            <div class="accordion-item">
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {studentPicture ? (
+                    <img src={studentPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+                <div className="col2 col-12 col-md-6">
+                  <div className="signature">
+                    <p className="signaturep">Student Signature</p>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {fatherPicture ? (
+                    <img src={fatherPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+                <div className="col2 col-12 col-md-6">
+                  <div className="signature">
+                    <p className="signaturep">Father's Signature</p>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {motherPicture ? (
+                    <img src={motherPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+                <div className="col2 col-12 col-md-6">
+                  <div className="signature">
+                    <p className="signaturep">Mother's Signature</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion nextSection" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                Documents to be submitted with the from
+              </h2>
+              {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! First Row !!!!!!!!!!!!!!!!!*/}
+              <p>
+                {
+                  "1) Xeroc copy of Birth Certificate 2) Xerox copy of Aadhar Card 3) Xerox copy of Caste Certificate (In case of SC/ST students) 4) School Leaving Certificate (If applicable) 5) Xerox copy of Ration Card (In case of BPL) 6)Voter Card of Father and Mother 7) Polio Certificate 8) Student stamp size photo (3 copy), 9) Father image stamp size(1 copy), 10) Mother image stamp size(1 copy)"
+                }
+              </p>
+            </div>
+          </div>
+
+          <div class="accordion nextSection" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                Admission Details (For office use only)
+              </h2>
+              {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! First Row !!!!!!!!!!!!!!!!!*/}
+              <div className="row">
+                <div className="col2 col-12">
+                  <TextInput2
+                    lable="Admission No"
+                    type="text"
+                    value={""}
+                    setValue={setHouseNo}
+                    placeholder="Enter House No/Village/Para/Road"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  <TextInput2
+                    lable="Admission Date (DD/MM/YYYY)"
+                    type="text"
+                    value={""}
+                    setValue={setPostOffice}
+                    placeholder="Enter Post Office"
+                  />
+                </div>
+                <div className="col2 col-12 col-md-6">
+                  <TextInput2
+                    lable="Class of Admission"
+                    type="text"
+                    value={""}
+                    setValue={setPoliceStation}
+                    placeholder="Enter Police Station"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <TextInput2
+                    lable="Student ID"
+                    type="text"
+                    value={""}
+                    setValue={setBlock}
+                    placeholder="Enter Block / Municipalty"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion nextSection" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                Current Class Details (For office use only)
+              </h2>
+              {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! First Row !!!!!!!!!!!!!!!!!*/}
+              <div className="row">
+                <div className="col2 col-12">
+                  <TextInput2
+                    lable="Class"
+                    type="text"
+                    value={""}
+                    setValue={setHouseNo}
+                    placeholder="Enter House No/Village/Para/Road"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  <TextInput2
+                    lable="Section"
+                    type="text"
+                    value={""}
+                    setValue={setPostOffice}
+                    placeholder="Enter Post Office"
+                  />
+                </div>
+                <div className="col2 col-12 col-md-6">
+                  <TextInput2
+                    lable="Roll no"
+                    type="text"
+                    value={""}
+                    setValue={setPoliceStation}
+                    placeholder="Enter Police Station"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <TextInput2
+                    lable="House Name"
+                    type="text"
+                    value={""}
+                    setValue={setBlock}
+                    placeholder="Enter Block / Municipalty"
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <TextInput2
+                    lable="Conveyance Details"
+                    type="text"
+                    value={""}
+                    setValue={setBlock}
+                    placeholder="Enter Block / Municipalty"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {pageState == 2 ? (
@@ -1578,7 +2610,10 @@ const Admin = () => {
               <h2>Loading...</h2>
             ) : (
               <>
-                <button class="EditButton btn btn-outline-secondary btn-lg">
+                <button
+                  class="EditButton btn btn-outline-secondary btn-lg"
+                  onClick={onEdit}
+                >
                   Edit
                 </button>
 
