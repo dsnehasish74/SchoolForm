@@ -1661,6 +1661,18 @@ const Admin = () => {
                   />
                 </div>
               </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <TextInput2
+                    lable="Student's Name(In Bengali)(optional)"
+                    type="text"
+                    value={""}
+                    setValue={setName}
+                    placeholder="Enter Student's Name"
+                  />
+                </div>
+              </div>
               {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! Second Row !!!!!!!!!!!!!!!!!*/}
               <div className="row">
                 <div className="col2 col-12 col-md-6">
