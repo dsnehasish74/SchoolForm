@@ -103,32 +103,23 @@ const Admin = () => {
       err.push("Date of Birth");
     }
     if (gender == 0) {
-      err.push("Date of Birth");
+      err.push("Gender");
     }
     if (caste == 0) {
       err.push("Caste");
     }
-    if (subCaste.length == 0) {
-      err.push("Sub-Caste");
-    }
+
     if (religion == 0) {
       err.push("Religion");
     }
-    if (bloodGroup.length == 0) {
-      err.push("Blood Group");
-    }
+
     if (nationality.length == 0) {
       err.push("Nationality");
     }
     if (motherLanguage.length == 0) {
       err.push("Mother Toungue");
     }
-    if (secondLanguage.length == 0) {
-      err.push("2n Language");
-    }
-    if (thirdLanguage.length == 0) {
-      err.push("Third Language");
-    }
+
     if (isBpl == 0) {
       err.push("BPL Status");
     }
@@ -137,94 +128,19 @@ const Admin = () => {
     }
     setPersonErr(err);
 
-    if (houseNo.length == 0) {
-      err1.push("House No/Village/Para/Road");
-    }
-    if (postOffice.length == 0) {
-      err1.push("Post Office");
-    }
-    if (policeStation.length == 0) {
-      err1.push("Police Station");
-    }
-    if (block.length == 0) {
-      err1.push("Block/Municipalty");
-    }
-    if (district.length == 0) {
-      err1.push("District");
-    }
-    if (pin.length == 0) {
-      err1.push("Pin");
-    }
-    if (mobileNo.length == 0) {
-      err1.push("Primary Mobile");
-    }
-    if (email.length == 0) {
-      err1.push("Email id");
-    }
-
-    setContactErr(err1);
-
-    if (
-      fatherName.length == 0 ||
-      motherName.length == 0 ||
-      guardianName.length == -0
-    ) {
+    if (fatherName.length == 0) {
       err2.push("Name");
     }
-    if (fatherEducation.length == 0 || motherEducation.length == 0) {
+    if (fatherEducation.length == 0) {
       err2.push("Education");
     }
-    if (
-      fatherOccupation.length == 0 ||
-      motherOccupation.length == 0 ||
-      guardianOccupation.length == 0
-    ) {
-      err2.push("Occupation");
-    }
-    if (fatherOffice.length == 0 || motherOffice.length == 0) {
-      err2.push("Name of Office/Business & Address");
-    }
-    if (
-      fatherContactNo.length == 0 ||
-      motherContactNo.length == 0 ||
-      guardianContactNo.length == 0
-    ) {
+
+    if (fatherContactNo.length == 0) {
       err2.push("Contact No");
     }
-    if (
-      fatherAnnualIncome.length == 0 ||
-      motherAnnualIncome.length == 0 ||
-      guardianAnnualIncome.length == 0
-    ) {
-      err2.push("Annual Income");
-    }
-    if (timeByFather.length == 0 || timeByMother.length == 0) {
-      err2.push("Time give in a day to the child");
-    }
+
     setParrentErr(err2);
 
-    if (isJoinFamily == 0) {
-      err3.push("Whether joint family");
-    }
-    if (totalMember == 0) {
-      err3.push("Total member of the family");
-    }
-    if (elderMember.length == 0) {
-      err3.push("No of elder member");
-    }
-    if (youngerMember.length == 0) {
-      err3.push("No of Younger member");
-    }
-    if (primaryImmunization == 0) {
-      err3.push(
-        "Whether the students has been given primary immunizations/antidote"
-      );
-    }
-    if (whyAdmit.length == 0) {
-      err3.push(
-        "Why do you want to admit your child in Nivedita Shishu Tirtha?"
-      );
-    }
     if (
       studentPicture.length == 0 ||
       fatherPicture.length == 0 ||
@@ -282,7 +198,7 @@ const Admin = () => {
   const fromSubmitCall = () => {
     const res = {
       Name: name,
-      "Date of Birth": age,
+      "Date of Birth": new Date(age).toLocaleDateString(),
       Gender: gender == 1 ? "Boy" : "Girl",
       Caste:
         caste == 1
@@ -339,20 +255,29 @@ const Admin = () => {
       "Previous School Name": prevSchoolName,
       "Last Class Attend": lastClassAttend,
       "School Leaving Cert. No": schoolLeavingCert,
-      "Issue Date": issueDate,
-      "Whether Joint family": isJoinFamily == 1 ? "Yes" : "No",
+      "Issue Date": new Date(issueDate).toLocaleDateString(),
+      "Whether Joint family":
+        isJoinFamily == 1 ? "Yes" : isJoinFamily == 2 ? "No" : "",
       "Total Family Member": totalMember,
       "No of elder member": elderMember,
       "No of Younger member": youngerMember,
       "How impish the student is":
-        impish == 1 ? "Too much" : impish == 2 ? "Normal" : "Not At all",
+        impish == 1
+          ? "Too much"
+          : impish == 2
+          ? "Normal"
+          : impish == 3
+          ? "Not At all"
+          : "",
       "Special Habbits": specialHabbits,
       "particular Disease": particularDisease,
       "Parrent Particular Disease": parrentDisease,
-      "primary immunizations": primaryImmunization == 1 ? "Yes" : "No",
+      "primary immunizations":
+        primaryImmunization == 1 ? "Yes" : primaryImmunization == 2 ? "No" : "",
       "Belive in which medical system":
         medicalSystem == 1 ? "Homeopathy" : "Allopathy",
-      "Do you need school vehicle": needSchoolVehical == 1 ? "Yes" : "No",
+      "Do you need school vehicle":
+        needSchoolVehical == 1 ? "Yes" : needSchoolVehical == 2 ? "No" : "",
       "why you want to admit": whyAdmit,
       "Student's Photo": studentPicture,
       "Father's Photo": fatherPicture,
@@ -397,6 +322,7 @@ const Admin = () => {
                     value={name}
                     setValue={setName}
                     placeholder="Enter Student's Name"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -408,6 +334,7 @@ const Admin = () => {
                     value={admisonYear}
                     setValue={setAdmisonYear}
                     placeholder="Enter Admission Year"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -420,11 +347,13 @@ const Admin = () => {
                     value={age}
                     setValue={setAge}
                     placeholder="Enter Student's Birth Date"
+                    isRequired={true}
                   />
                 </div>
                 <div className="col col-12 col-md-6 ">
                   <label for="exampleFormControlInput1" class="form-label">
                     Gender
+                    <span style={{ color: "red", marginLeft: "8px" }}>*</span>
                   </label>
                   <div className="CheckBoxes">
                     <div class="form-check">
@@ -467,6 +396,7 @@ const Admin = () => {
                 <div className="col col-12 col-md-6 ">
                   <label for="exampleFormControlInput1" class="form-label">
                     Caste
+                    <span style={{ color: "red", marginLeft: "8px" }}>*</span>
                   </label>
                   <div className="CheckBoxes">
                     <div class="form-check">
@@ -565,6 +495,7 @@ const Admin = () => {
                 <div className="col col-12 col-md-6 ">
                   <label for="exampleFormControlInput1" class="form-label">
                     Religion
+                    <span style={{ color: "red", marginLeft: "8px" }}>*</span>
                   </label>
                   <div className="CheckBoxes">
                     <div class="form-check">
@@ -645,6 +576,7 @@ const Admin = () => {
                     value={nationality}
                     setValue={setNationality}
                     placeholder="Enter Student's Nationality"
+                    isRequired={true}
                   />
                 </div>
                 <div className="col col-12 col-md-6">
@@ -654,6 +586,7 @@ const Admin = () => {
                     value={motherLanguage}
                     setValue={setMotherLanguage}
                     placeholder="Enter Student's Mother Toungue"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -683,11 +616,11 @@ const Admin = () => {
               <div className="row">
                 <div className="col col-12">
                   <TextInput
-                    lable="Addhar Card No (if available)"
+                    lable="Aadhaar Card No (if available)"
                     type="text"
                     value={addharNo}
                     setValue={setAddharNo}
-                    placeholder="Enter Student's Addhar Card No"
+                    placeholder="Enter Student's Aadhaar Card No"
                   />
                 </div>
               </div>
@@ -695,7 +628,8 @@ const Admin = () => {
               <div class="row">
                 <div className="col col-12 col-md-6 ">
                   <label for="exampleFormControlInput1" class="form-label">
-                    Bpl Status
+                    BPL Status
+                    <span style={{ color: "red", marginLeft: "8px" }}>*</span>
                   </label>
                   <div className="CheckBoxes">
                     <div class="form-check">
@@ -747,7 +681,7 @@ const Admin = () => {
               <div className="row">
                 <div className="col col-12">
                   <TextInput
-                    lable="Type of Disability(if available)"
+                    lable="Type of Disability(if any)"
                     type="text"
                     value={disability}
                     setValue={setDisability}
@@ -764,6 +698,7 @@ const Admin = () => {
                     value={identification}
                     setValue={setIdentification}
                     placeholder="Enter Student's Identification Mark"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -879,6 +814,7 @@ const Admin = () => {
                     value={fatherName}
                     setValue={setFatherName}
                     placeholder="Enter Father's Name"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -891,6 +827,7 @@ const Admin = () => {
                     value={fatherEducation}
                     setValue={setFatherEducation}
                     placeholder="Enter Father's Education"
+                    isRequired={true}
                   />
                 </div>
                 <div className="col col-12 col-md-6">
@@ -924,15 +861,7 @@ const Admin = () => {
                     value={fatherContactNo}
                     setValue={setFatherContactNo}
                     placeholder="Enter Father's Contact No"
-                  />
-                </div>
-                <div className="col col-12 col-md-6">
-                  <TextInput
-                    lable="Annual Income"
-                    type="text"
-                    value={fatherAnnualIncome}
-                    setValue={setFatherAnnualIncome}
-                    placeholder="Enter Father Annual income"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -1003,15 +932,6 @@ const Admin = () => {
                     placeholder="Enter Mother's Contact No"
                   />
                 </div>
-                <div className="col col-12 col-md-6">
-                  <TextInput
-                    lable="Annual Income"
-                    type="text"
-                    value={motherAnnualIncome}
-                    setValue={setMotherAnnualIncome}
-                    placeholder="Enter Mother's Annual income"
-                  />
-                </div>
               </div>
               <div className="row">
                 <div className="col col-12">
@@ -1040,7 +960,7 @@ const Admin = () => {
               <div className="row">
                 <div className="col col-12">
                   <TextInput
-                    lable="Guardian's Name"
+                    lable="Guardian's Name(absence of father and mother)"
                     type="text"
                     value={guardianName}
                     setValue={setGuardianName}
@@ -1082,11 +1002,11 @@ const Admin = () => {
                 </div>
                 <div className="col col-12 col-md-6">
                   <TextInput
-                    lable="Annual Income"
+                    lable="Family Annual Income"
                     type="text"
                     value={guardianAnnualIncome}
                     setValue={setGuardianAnnualIncome}
-                    placeholder="Enter Guardian's Annual Income"
+                    placeholder="Enter Family Annual Income"
                   />
                 </div>
               </div>
@@ -1108,7 +1028,7 @@ const Admin = () => {
           <div class="accordion nextSection" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingOne">
-                Previous School Details
+                Previous School Details (if any)
               </h2>
               {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! First Row !!!!!!!!!!!!!!!!!*/}
               <div className="row">
@@ -1126,11 +1046,11 @@ const Admin = () => {
               <div className="row">
                 <div className="col col-12">
                   <TextInput
-                    lable="Last Class Attend"
+                    lable="Previous Class"
                     type="text"
                     value={lastClassAttend}
                     setValue={setLastClassAttend}
-                    placeholder="Enter Last Class Attend"
+                    placeholder="Previous Class"
                   />
                 </div>
               </div>
@@ -1298,11 +1218,11 @@ const Admin = () => {
               <div className="row">
                 <div className="col col-12 ">
                   <TextInput
-                    lable="Wheather the student has any special habits"
+                    lable="Whether the student has any special habits"
                     type="text"
                     value={specialHabbits}
                     setValue={setSpecialHabbits}
-                    placeholder="Enter wheather the student has any special habits"
+                    placeholder="Enter Whether the student has any special habits"
                   />
                 </div>
               </div>
@@ -1310,11 +1230,11 @@ const Admin = () => {
               <div className="row">
                 <div className="col col-12">
                   <TextInput
-                    lable="Wheather the student has any particular disease"
+                    lable="Whether the student has any particular disease"
                     type="text"
                     value={particularDisease}
                     setValue={setParticularDisease}
-                    placeholder="Enter wheather the student has any special disease"
+                    placeholder="Enter Whether the student has any special disease"
                   />
                 </div>
               </div>
@@ -1322,11 +1242,11 @@ const Admin = () => {
               <div className="row">
                 <div className="col col-12">
                   <TextInput
-                    lable="Wheather the parrent has any particular disease"
+                    lable="Whether the parrent has any particular disease"
                     type="text"
                     value={parrentDisease}
                     setValue={setParrentDisease}
-                    placeholder="Enter wheather the parrent has any special disease"
+                    placeholder="Enter Whether the parrent has any special disease"
                   />
                 </div>
               </div>
@@ -1569,9 +1489,9 @@ const Admin = () => {
                 abide by them in all respects. I understand that the decision of
                 the management of the school shall be final. I hereby certify
                 that my ward and I shall follow all the rules and regulations
-                enforced from tiome to time by the school management. I
-                undertake that I shall not indulge into unwanted activities in
-                order to maintain the sanctity of the Institution.
+                enforced from time to time by the school management. I undertake
+                that I shall not indulge into unwanted activities in order to
+                maintain the sanctity of the Institution.
               </p>
             </div>
           </div>
@@ -1658,6 +1578,7 @@ const Admin = () => {
                     value={name}
                     setValue={setName}
                     placeholder="Enter Student's Name"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -1670,6 +1591,7 @@ const Admin = () => {
                     value={""}
                     setValue={setName}
                     placeholder="Enter Student's Name"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -1679,9 +1601,10 @@ const Admin = () => {
                   <TextInput2
                     lable="Date of Birth"
                     type="date"
-                    value={age}
+                    value={new Date(age).toLocaleDateString()}
                     setValue={setAge}
                     placeholder="Enter Student's Birth Date"
+                    isrequired={true}
                   />
                 </div>
                 <div className="col2 col-12 col-md-6 ">
@@ -1690,7 +1613,8 @@ const Admin = () => {
                     class="form-label"
                     style={{ fontWeight: "bold" }}
                   >
-                    Gender :
+                    Gender{" "}
+                    <span style={{ marginLeft: "8px", color: "red" }}>*</span> :
                   </label>
                   <lable class="form-label" style={{ marginLeft: "10px" }}>
                     {gender == 1 ? "Boy" : "Girl"}
@@ -1705,7 +1629,8 @@ const Admin = () => {
                     class="form-label"
                     style={{ fontWeight: "bold" }}
                   >
-                    Caste :
+                    Caste{" "}
+                    <span style={{ marginLeft: "8px", color: "red" }}>*</span> :
                   </label>
                   <lable class="form-label" style={{ marginLeft: "10px" }}>
                     {caste == 1
@@ -1736,7 +1661,8 @@ const Admin = () => {
                     class="form-label"
                     style={{ fontWeight: "bold" }}
                   >
-                    Religion :
+                    Religion{" "}
+                    <span style={{ marginLeft: "8px", color: "red" }}>*</span> :
                   </label>
                   <lable class="form-label" style={{ marginLeft: "10px" }}>
                     {religion == 1
@@ -1745,14 +1671,6 @@ const Admin = () => {
                       ? "Islam"
                       : otherReligion}
                   </lable>
-                </div>
-                <div className="col2 col-12 col-md-6 ">
-                  <TextInput2
-                    lable="Blood Group"
-                    value={bloodGroup}
-                    setValue={setBloodGroup}
-                    placeholder="Enter Student's Blood Group"
-                  />
                 </div>
               </div>
               {/* !!!!!!!!!!!!!!!!!!!!!!!!Fifth Row !!!!!!!!!!!!!!!!!*/}
@@ -1764,6 +1682,7 @@ const Admin = () => {
                     value={nationality}
                     setValue={setNationality}
                     placeholder="Enter Student's Nationality"
+                    isRequired={true}
                   />
                 </div>
                 <div className="col2 col-12 col-md-6">
@@ -1773,6 +1692,7 @@ const Admin = () => {
                     value={motherLanguage}
                     setValue={setMotherLanguage}
                     placeholder="Enter Student's Mother Toungue"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -1817,8 +1737,10 @@ const Admin = () => {
                     for="exampleFormControlInput1"
                     class="form-label"
                     style={{ fontWeight: "bold" }}
+                    isRequired={true}
                   >
-                    Bpl Status :
+                    BPL Status
+                    <span style={{ marginLeft: "8px", color: "red" }}>*</span> :
                   </label>
                   {isBpl == 1 ? " Yes, " + bplCardNo : " No"}
                 </div>
@@ -1852,6 +1774,7 @@ const Admin = () => {
                     value={identification}
                     setValue={setIdentification}
                     placeholder="Enter Student's Identification Mark"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -1965,6 +1888,7 @@ const Admin = () => {
                     value={fatherName}
                     setValue={setFatherName}
                     placeholder="Enter Father's Name"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -1977,6 +1901,7 @@ const Admin = () => {
                     value={fatherEducation}
                     setValue={setFatherEducation}
                     placeholder="Enter Father's Education"
+                    isRequired={true}
                   />
                 </div>
                 <div className="col2 col-12 col-md-6">
@@ -2010,15 +1935,7 @@ const Admin = () => {
                     value={fatherContactNo}
                     setValue={setFatherContactNo}
                     placeholder="Enter Father's Contact No"
-                  />
-                </div>
-                <div className="col2 col-12 col-md-6">
-                  <TextInput2
-                    lable="Annual Income"
-                    type="text"
-                    value={fatherAnnualIncome}
-                    setValue={setFatherAnnualIncome}
-                    placeholder="Enter Father Annual income"
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -2088,15 +2005,6 @@ const Admin = () => {
                     value={motherContactNo}
                     setValue={setMotherContactNo}
                     placeholder="Enter Mother's Contact No"
-                  />
-                </div>
-                <div className="col2 col-12 col-md-6">
-                  <TextInput2
-                    lable="Annual Income"
-                    type="text"
-                    value={motherAnnualIncome}
-                    setValue={setMotherAnnualIncome}
-                    placeholder="Enter Mother's Annual income"
                   />
                 </div>
               </div>
@@ -2170,7 +2078,7 @@ const Admin = () => {
                 </div>
                 <div className="col2 col-12 col-md-6">
                   <TextInput2
-                    lable="Annual Income"
+                    lable="Family Annual Income"
                     type="text"
                     value={guardianAnnualIncome}
                     setValue={setGuardianAnnualIncome}
@@ -2194,7 +2102,7 @@ const Admin = () => {
           <div class="accordion nextSection" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingOne">
-                Previous School Details
+                Previous School Details (if any)
               </h2>
               {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! First Row !!!!!!!!!!!!!!!!!*/}
               <div className="row">
@@ -2212,7 +2120,7 @@ const Admin = () => {
               <div className="row">
                 <div className="col2 col-12">
                   <TextInput2
-                    lable="Last Class Attend"
+                    lable="Previous Class"
                     type="text"
                     value={lastClassAttend}
                     setValue={setLastClassAttend}
@@ -2261,7 +2169,11 @@ const Admin = () => {
                   </label>
                   <label style={{ marginLeft: "8px" }}>
                     {" "}
-                    {isJoinFamily == 1 ? " Yes" : " No"}
+                    {isJoinFamily == 1
+                      ? " Yes"
+                      : isJoinFamily == 2
+                      ? " No"
+                      : ""}
                   </label>
                 </div>
                 <div className="col2 col-12 col-md-6">
@@ -2310,7 +2222,9 @@ const Admin = () => {
                       ? " Too much"
                       : impish == 2
                       ? " Normal"
-                      : " Not at all"}
+                      : impish == 3
+                      ? " Not at all"
+                      : ""}
                   </label>
                 </div>
               </div>
@@ -2362,7 +2276,11 @@ const Admin = () => {
                     immunizations/antidote :{" "}
                   </label>
                   <label style={{ marginLeft: "8px" }}>
-                    {primaryImmunization == 1 ? "Yes" : "No"}
+                    {primaryImmunization == 1
+                      ? "Yes"
+                      : primaryImmunization == 2
+                      ? "No"
+                      : ""}
                   </label>
                 </div>
               </div>
@@ -2377,7 +2295,11 @@ const Admin = () => {
                     Belive in which medical system :{" "}
                   </label>
                   <label style={{ marginLeft: "8px" }}>
-                    {medicalSystem == 1 ? "Homeopathy" : "Allopathy"}
+                    {medicalSystem == 1
+                      ? "Homeopathy"
+                      : medicalSystem == 2
+                      ? "Allopathy"
+                      : ""}
                   </label>
                 </div>
               </div>
@@ -2392,7 +2314,11 @@ const Admin = () => {
                     Do you need school vehicle :{" "}
                   </label>
                   <label style={{ marginLeft: "8px" }}>
-                    {needSchoolVehical == 1 ? "Yes" : "No"}
+                    {needSchoolVehical == 1
+                      ? "Yes"
+                      : needSchoolVehical == 2
+                      ? "No"
+                      : ""}
                   </label>
                 </div>
               </div>
@@ -2429,9 +2355,9 @@ const Admin = () => {
                 abide by them in all respects. I understand that the decision of
                 the management of the school shall be final. I hereby certify
                 that my ward and I shall follow all the rules and regulations
-                enforced from tiome to time by the school management. I
-                undertake that I shall not indulge into unwanted activities in
-                order to maintain the sanctity of the Institution.
+                enforced from time to time by the school management. I undertake
+                that I shall not indulge into unwanted activities in order to
+                maintain the sanctity of the Institution.
               </p>
             </div>
           </div>
@@ -2491,7 +2417,7 @@ const Admin = () => {
               {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! First Row !!!!!!!!!!!!!!!!!*/}
               <p>
                 {
-                  "1) Xeroc copy of Birth Certificate 2) Xerox copy of Aadhar Card 3) Xerox copy of Caste Certificate (In case of SC/ST students) 4) School Leaving Certificate (If applicable) 5) Xerox copy of Ration Card (In case of BPL) 6)Voter Card of Father and Mother 7) Polio Certificate 8) Student stamp size photo (3 copy), 9) Father image stamp size(1 copy), 10) Mother image stamp size(1 copy)"
+                  "1) Xeroc copy of Birth Certificate 2) Xerox copy of Aadhaar Card 3) Xerox copy of Caste Certificate (In case of SC/ST students) 4) School Leaving Certificate (If applicable) 5) Xerox copy of Ration Card (In case of BPL) 6)Voter Card of Father and Mother 7) Immunization Certificate 8) Student stamp size photo (3 copy), 9) Father image stamp size(1 copy), 10) Mother image stamp size(1 copy)"
                 }
               </p>
             </div>

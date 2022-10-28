@@ -14,7 +14,11 @@ const TextInput2 = ({
         class="form-label"
         style={{ fontWeight: "bold" }}
       >
-        {lable} :
+        {lable}
+        {isRequired && (
+          <span style={{ marginLeft: "8px", color: "red" }}>*</span>
+        )}{" "}
+        :
       </label>
       <lable class="form-label" style={{ marginLeft: "10px" }}>
         {value}

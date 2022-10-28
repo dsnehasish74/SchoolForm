@@ -11,6 +11,9 @@ const TextInput = ({
     <div>
       <label for="exampleFormControlInput1" class="form-label">
         {lable}
+        {isRequired && (
+          <span style={{ marginLeft: "8px", color: "red" }}>*</span>
+        )}
       </label>
       <input
         type={type}

@@ -100,14 +100,12 @@ const MyDocument = () => {
             "Father's Occupation": doc.data()["Father's Occupation"],
             "Father's Office": doc.data()["Father's Office"],
             "Father's Contact No": doc.data()["Father's Contact No"],
-            "Father's Annual Income": doc.data()["Father's Annual Income]"],
             "Time given by Father": doc.data()["Time given by Father"],
             "Mother's Name": doc.data()["Mother's Name"],
             "Mother's Education": doc.data()["Mother's Education"],
             "Mother's Occupation": doc.data()["Mother's Occupation"],
             "Mother's Office": doc.data()["Mother's Office"],
             "Mother's Contact No": doc.data()["Mother's Contact No"],
-            "Mother's Annual Income": doc.data()["Mother's Annual Income"],
             "Time given by Mother": doc.data()["Time given by Mother"],
             "Any Need of Private Tutor":
               doc.data()["Any Need of Private Tutor"],
@@ -115,7 +113,7 @@ const MyDocument = () => {
             "Guardian's Occupation": doc.data()["Guardian's Occupation"],
             "Guardian's Relation": doc.data()["Guardian's Relation"],
             "Guardian's Contact No": doc.data()["Guardian's Contact No"],
-            "Guardian's Annual Income": doc.data()["Guardian's Annual Income"],
+            "Family Annual Income": doc.data()["Guardian's Annual Income"],
             "Reason if Someone else take the custody":
               doc.data()["Reason if Someone else take the custody"],
             "Previous School Name": doc.data()["Previous School Name"],
@@ -164,35 +162,61 @@ const MyDocument = () => {
       "Is Doc Submitted:": "No",
     });
   };
+  const [p, setP] = useState("");
+  const [ps, setPS] = useState(1);
+  const onPS = () => {
+    if (p == "nst@6532") {
+      setPS(2);
+    } else {
+      alert("Wrong Password");
+    }
+  };
   return (
     <div className="container">
-      <h1>Total {data.length} responses</h1>
-      <JsonToExcel
-        title="Download as Excel"
-        data={data}
-        fileName="sample-file"
-      />
-      <div style={{ width: "100%", height: "100px" }}></div>
-      {
-        <div>
-          {data.map((e) => {
-            return (
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p>{e["Date"]}</p>
-                <p>{e["Name"]}</p>
-                <p>{e["Father's Name"]}</p>
-                {e["Is Doc Submitted:"] == "No" ? (
-                  <button onClick={() => onSubmit(e.id)}>submitted</button>
-                ) : (
-                  <button onClick={() => onUnSubmit(e.id)}>
-                    not Submitted
-                  </button>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      }
+      {ps == 1 ? (
+        <>
+          <input
+            placeholder="Enter Password"
+            type="text"
+            style={{ marginTop: "100px" }}
+            value={p}
+            onChange={(e) => setP(e.target.value)}
+          />
+          <button onClick={onPS}>Submit</button>
+        </>
+      ) : (
+        <>
+          <h1>Total {data.length} responses</h1>
+          <JsonToExcel
+            title="Download as Excel"
+            data={data}
+            fileName="sample-file"
+          />
+          <div style={{ width: "100%", height: "100px" }}></div>
+          {
+            <div>
+              {data.map((e) => {
+                return (
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <p>{e["Date"]}</p>
+                    <p>{e["Name"]}</p>
+                    <p>{e["Father's Name"]}</p>
+                    {e["Is Doc Submitted:"] == "No" ? (
+                      <button onClick={() => onSubmit(e.id)}>submitted</button>
+                    ) : (
+                      <button onClick={() => onUnSubmit(e.id)}>
+                        not Submitted
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          }
+        </>
+      )}
     </div>
   );
 };
