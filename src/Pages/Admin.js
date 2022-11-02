@@ -87,6 +87,10 @@ const Admin = () => {
   const [parrentErr, setParrentErr] = useState([]);
   const [otherErr, setOtherErr] = useState([]);
 
+  const DateR = (d) => {
+    var initial = d.split(/\//);
+    return [initial[1], initial[0], initial[2]].join("/");
+  };
   const onPreviewSubmit = () => {
     let err = [];
     let err1 = [];
@@ -198,7 +202,7 @@ const Admin = () => {
   const fromSubmitCall = () => {
     const res = {
       Name: name,
-      "Date of Birth": new Date(age).toLocaleDateString(),
+      "Date of Birth": DateR(new Date(age).toLocaleDateString()),
       Gender: gender == 1 ? "Boy" : "Girl",
       Caste:
         caste == 1
@@ -255,7 +259,7 @@ const Admin = () => {
       "Previous School Name": prevSchoolName,
       "Last Class Attend": lastClassAttend,
       "School Leaving Cert. No": schoolLeavingCert,
-      "Issue Date": new Date(issueDate).toLocaleDateString(),
+      "Issue Date": DateR(new Date(issueDate).toLocaleDateString()),
       "Whether Joint family":
         isJoinFamily == 1 ? "Yes" : isJoinFamily == 2 ? "No" : "",
       "Total Family Member": totalMember,
@@ -283,7 +287,7 @@ const Admin = () => {
       "Father's Photo": fatherPicture,
       "Mother's Photo": motherPicture,
       "Admission Year": admisonYear,
-      Date: new Date().toLocaleDateString(),
+      Date: DateR(new Date().toLocaleDateString()),
       "Is Doc Submitted:": "No",
     };
     setIsLoading(true);
@@ -1564,7 +1568,7 @@ const Admin = () => {
             <h2 style={{ textAlign: "center" }}>Admission Form</h2>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <p>Admission Year : {admisonYear}</p>
-              <p>Date: {new Date().toLocaleDateString()}</p>
+              <p>Date: {DateR(new Date().toLocaleDateString())}</p>
             </div>
           </div>
           <div class="accordion" id="accordionExample">
@@ -1605,7 +1609,7 @@ const Admin = () => {
                   <TextInput2
                     lable="Date of Birth"
                     type="date"
-                    value={new Date(age).toLocaleDateString()}
+                    value={DateR(new Date(age).toLocaleDateString())}
                     setValue={setAge}
                     placeholder="Enter Student's Birth Date"
                     isRequired={true}
@@ -2147,7 +2151,7 @@ const Admin = () => {
                   <TextInput2
                     lable="Issue Date"
                     type="text"
-                    value={issueDate}
+                    value={DateR(new Date(issueDate).toLocaleDateString())}
                     setValue={setIssueDate}
                     placeholder="Enter Issue Date"
                   />

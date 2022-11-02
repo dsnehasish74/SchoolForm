@@ -157,6 +157,10 @@ const Adminp = (props) => {
         });
     }
   }, [id]);
+  const DateR = (d) => {
+    var initial = d.split(/\//);
+    return [initial[1], initial[0], initial[2]].join("/");
+  };
 
   return (
     <>
@@ -171,7 +175,7 @@ const Adminp = (props) => {
             <h2 style={{ textAlign: "center" }}>Admission Form</h2>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <p>Admission Year : {admisonYear}</p>
-              <p>Date: {new Date().toLocaleDateString()}</p>
+              <p>Date: {DateR(new Date().toLocaleDateString())}</p>
             </div>
           </div>
           <div class="accordion" id="accordionExample">
