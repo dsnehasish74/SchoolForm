@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { JsonToCsv, useJsonToCsv } from "react-json-csv";
 import { JsonToExcel } from "react-json-to-excel";
+import { Link } from "react-router-dom";
 // Create styles
 
 // Create Document Component
@@ -11,7 +12,7 @@ const MyDocument = () => {
   const { saveAsCsv } = useJsonToCsv();
   const fields = {
     Name: "Name",
-    "Date of Birth": "Date of Birth",
+    "Date of Birth(MM/DD/YYYY)": "Date of Birth",
     Gender: "Gender",
     Caste: "Caste",
     Subcaste: "Subcaste",
@@ -171,6 +172,23 @@ const MyDocument = () => {
       alert("Wrong Password");
     }
   };
+  const onDelete = (id) => {
+    console.log(id);
+    db.collection("Notes")
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  };
+  const DeleteAll = () => {
+    data.map((e) => {
+      onDelete(e.id);
+    });
+  };
   return (
     <div className="container">
       {ps == 1 ? (
@@ -192,24 +210,67 @@ const MyDocument = () => {
             data={data}
             fileName="sample-file"
           />
+          <button
+            className="btn btn-danger"
+            onClick={DeleteAll}
+            style={{ marginTop: "8px", marginBottom: "8px" }}
+          >
+            Delete All
+          </button>
           <div style={{ width: "100%", height: "100px" }}></div>
           {
             <div>
               {data.map((e) => {
                 return (
                   <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: "100%",
+                      overflow: "auto",
+                      marginBottom: "16px",
+                    }}
                   >
-                    <p>{e["Date"]}</p>
-                    <p>{e["Name"]}</p>
-                    <p>{e["Father's Name"]}</p>
+                    <button
+                      onClick={() => {
+                        onDelete(e.id);
+                      }}
+                    >
+                      Delete
+                    </button>
+
+                    <p style={{ marginLeft: "8px", marginRight: "8px" }}>
+                      {e["Date"]}
+                    </p>
+                    <p style={{ marginLeft: "8px", marginRight: "8px" }}>
+                      {e["Name"]}
+                    </p>
+                    <p style={{ marginLeft: "8px", marginRight: "8px" }}>
+                      {e["Father's Name"]}
+                    </p>
                     {e["Is Doc Submitted:"] == "No" ? (
-                      <button onClick={() => onSubmit(e.id)}>submitted</button>
+                      <button
+                        style={{ marginLeft: "8px", marginRight: "8px" }}
+                        onClick={() => onSubmit(e.id)}
+                      >
+                        submitted
+                      </button>
                     ) : (
-                      <button onClick={() => onUnSubmit(e.id)}>
+                      <button
+                        style={{ marginLeft: "8px", marginRight: "8px" }}
+                        onClick={() => onUnSubmit(e.id)}
+                      >
                         not Submitted
                       </button>
                     )}
+                    <Link
+                      to={"/applications/" + e.id}
+                      key={e.id}
+                      style={{ textDecoration: "none" }}
+                      target="_blank"
+                    >
+                      <button>View</button>
+                    </Link>
                   </div>
                 );
               })}

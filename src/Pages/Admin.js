@@ -282,6 +282,7 @@ const Admin = () => {
       "Student's Photo": studentPicture,
       "Father's Photo": fatherPicture,
       "Mother's Photo": motherPicture,
+      "Admission Year": admisonYear,
       Date: new Date().toLocaleDateString(),
       "Is Doc Submitted:": "No",
     };
@@ -1412,7 +1413,8 @@ const Admin = () => {
                 <div className="col2 col-12 col-md-6">
                   <div className="s">
                     <label style={{ paddingBottom: "16px" }}>
-                      Upload Student's Picture
+                      Upload Student's Picture{" "}
+                      <span style={{ marginLeft: "8px", color: "red" }}>*</span>
                     </label>
                     <FileUploader
                       accept="image/*"
@@ -1436,6 +1438,7 @@ const Admin = () => {
                   <div className="s">
                     <label style={{ paddingBottom: "16px" }}>
                       Upload Father's Picture
+                      <span style={{ marginLeft: "8px", color: "red" }}>*</span>
                     </label>
                     <FileUploader
                       accept="image/*"
@@ -1459,6 +1462,7 @@ const Admin = () => {
                   <div className="s">
                     <label style={{ paddingBottom: "16px" }}>
                       Upload Mothers's Picture
+                      <span style={{ marginLeft: "8px", color: "red" }}>*</span>
                     </label>
                     <FileUploader
                       accept="image/*"
@@ -1586,7 +1590,7 @@ const Admin = () => {
               <div className="row">
                 <div className="col2 col-12">
                   <TextInput2
-                    lable="Student's Name(In Bengali)(optional)"
+                    lable="Student's Name(In Bengali)"
                     type="text"
                     value={""}
                     setValue={setName}
@@ -1604,7 +1608,7 @@ const Admin = () => {
                     value={new Date(age).toLocaleDateString()}
                     setValue={setAge}
                     placeholder="Enter Student's Birth Date"
-                    isrequired={true}
+                    isRequired={true}
                   />
                 </div>
                 <div className="col2 col-12 col-md-6 ">
@@ -2412,7 +2416,7 @@ const Admin = () => {
           <div class="accordion nextSection" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingOne">
-                Documents to be submitted with the from
+                Documents to be submitted with the form
               </h2>
               {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! First Row !!!!!!!!!!!!!!!!!*/}
               <p>
