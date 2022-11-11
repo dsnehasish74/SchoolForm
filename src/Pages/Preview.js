@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 // Create Document Component
 const MyDocument = () => {
   const [data, setData] = useState([]);
+  const [all, setAll] = useState([]);
   const filename = "Csv-file";
   const { saveAsCsv } = useJsonToCsv();
   const fields = {
@@ -72,6 +73,20 @@ const MyDocument = () => {
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
           let x = {
+            classToBeAdmitted:
+              doc.data()["classToBeAdmitted"] == 1
+                ? "কথাকলি(Age 3+)"
+                : doc.data()["classToBeAdmitted"]
+                ? "হাসিখুশি (Age 4+)"
+                : doc.data()["classToBeAdmitted"]
+                ? "কুসুমকলি (Age 5+)"
+                : doc.data()["classToBeAdmitted"]
+                ? "প্রথম শ্রেণী (Age 6+)"
+                : doc.data()["classToBeAdmitted"]
+                ? "দ্বিতীয় শ্রেণী (Age7+)"
+                : doc.data()["classToBeAdmitted"]
+                ? "তৃতীয় শ্রেণি (Age 8+)"
+                : "চতুর্থ শ্রেণি (Age 9+)",
             Name: doc.data()["Name"],
             "Date of Birth": doc.data()["Date of Birth"],
             Gender: doc.data()["Gender"],
@@ -149,6 +164,7 @@ const MyDocument = () => {
         });
 
         setData(result);
+        setAll(result);
         console.log("hi", result);
       });
   }, []);
@@ -188,7 +204,23 @@ const MyDocument = () => {
     data.map((e) => {
       onDelete(e.id);
     });
+    setClass2("0");
   };
+  const [class2, setClass2] = useState(0);
+  useEffect(() => {
+    if (class2 != 0) {
+      var arr = [];
+      all.map((e) => {
+        if (e.classToBeAdmitted == class2) {
+          arr.push(e);
+        }
+      });
+
+      setData(arr);
+    } else {
+      setData(all);
+    }
+  }, [class2]);
   return (
     <div className="container">
       {ps == 1 ? (
@@ -217,6 +249,29 @@ const MyDocument = () => {
           >
             Delete All
           </button>
+
+          <select
+            name="class"
+            id="lang"
+            class="class"
+            value={class2}
+            onChange={(e) => {
+              setClass2(e.target.value);
+            }}
+          >
+            <option value="0">All</option>
+            <option value="কথাকলি(Age 3+)">কথাকলি(Age 3+)</option>
+            <option value="হাসিখুশি (Age 4+)">হাসিখুশি (Age 4+)</option>
+            <option value="কুসুমকলি (Age 5+)">কুসুমকলি (Age 5+)</option>
+            <option value="প্রথম শ্রেণী (Age 6+)">প্রথম শ্রেণী (Age 6+)</option>
+            <option value="দ্বিতীয় শ্রেণী (Age7+)">
+              দ্বিতীয় শ্রেণী (Age7+)
+            </option>
+            <option value="তৃতীয় শ্রেণি (Age 8+)">তৃতীয় শ্রেণি (Age 8+)</option>
+            <option value="চতুর্থ শ্রেণি (Age 9+)">
+              চতুর্থ শ্রেণি (Age 9+)
+            </option>
+          </select>
           <div style={{ width: "100%", height: "100px" }}></div>
           {
             <div>

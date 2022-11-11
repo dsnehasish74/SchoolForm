@@ -76,6 +76,7 @@ const Adminp = (props) => {
   const [studentPicture, setStudentPicture] = useState("");
   const [fatherPicture, setFatherPicture] = useState("");
   const [motherPicture, setMotherPicture] = useState("");
+  const [class1, setClass1] = useState("");
 
   const [admisonYear, setAdmisonYear] = useState("");
 
@@ -154,6 +155,8 @@ const Adminp = (props) => {
           setFatherPicture(doc.data()["Father's Photo"]);
           setMotherPicture(doc.data()["Mother's Photo"]);
           setAdmisonYear(doc.data()["Admission Year"]);
+          setClass1(doc.data()["classToBeAdmitted"]);
+          console.log(doc.data()["classToBeAdmitted"]);
         });
     }
   }, [id]);
@@ -176,6 +179,37 @@ const Adminp = (props) => {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <p>Admission Year : {admisonYear}</p>
               <p>Date: {DateR(new Date().toLocaleDateString())}</p>
+            </div>
+          </div>
+          <div class="accordion nextSection" id="accordionExample">
+            <div class="accordion-item">
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {studentPicture ? (
+                    <img src={studentPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {fatherPicture ? (
+                    <img src={fatherPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {motherPicture ? (
+                    <img src={motherPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
           <div class="accordion" id="accordionExample">
@@ -205,6 +239,32 @@ const Adminp = (props) => {
                     type="text"
                     value={""}
                     setValue={setName}
+                    placeholder="Enter Student's Name"
+                    isRequired={true}
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <TextInput2
+                    lable="I want take admission for class"
+                    type="text"
+                    value={
+                      class1 == 1
+                        ? "কথাকলি(Age 3+)"
+                        : class1 == 2
+                        ? "হাসিখুশি (Age 4+)"
+                        : class1 == 3
+                        ? "কুসুমকলি (Age 5+)"
+                        : class1 == 4
+                        ? "প্রথম শ্রেণী (Age 6+)"
+                        : class1 == 5
+                        ? "দ্বিতীয় শ্রেণী (Age7+)"
+                        : class1 == 6
+                        ? "তৃতীয় শ্রেণি (Age 8+)"
+                        : "চতুর্থ শ্রেণি (Age 9+)"
+                    }
                     placeholder="Enter Student's Name"
                     isRequired={true}
                   />
@@ -940,13 +1000,6 @@ const Adminp = (props) => {
             <div class="accordion-item">
               <div className="row">
                 <div className="col2 col-12 col-md-6">
-                  {studentPicture ? (
-                    <img src={studentPicture} className="uploadPic" />
-                  ) : (
-                    <div className="uploadPicd"></div>
-                  )}
-                </div>
-                <div className="col2 col-12 col-md-6">
                   <div className="signature">
                     <p className="signaturep">Student Signature</p>
                   </div>
@@ -954,26 +1007,12 @@ const Adminp = (props) => {
               </div>
               <div className="row">
                 <div className="col2 col-12 col-md-6">
-                  {fatherPicture ? (
-                    <img src={fatherPicture} className="uploadPic" />
-                  ) : (
-                    <div className="uploadPicd"></div>
-                  )}
-                </div>
-                <div className="col2 col-12 col-md-6">
                   <div className="signature">
                     <p className="signaturep">Father's Signature</p>
                   </div>
                 </div>
               </div>
               <div className="row">
-                <div className="col2 col-12 col-md-6">
-                  {motherPicture ? (
-                    <img src={motherPicture} className="uploadPic" />
-                  ) : (
-                    <div className="uploadPicd"></div>
-                  )}
-                </div>
                 <div className="col2 col-12 col-md-6">
                   <div className="signature">
                     <p className="signaturep">Mother's Signature</p>

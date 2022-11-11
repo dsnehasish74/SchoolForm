@@ -100,6 +100,9 @@ const Admin = () => {
     if (name.length == 0) {
       err.push("Student's Name");
     }
+    if (class1 == 0) {
+      err.push("I want take admission for class");
+    }
     if (admisonYear.length == 0) {
       err.push("Admission Year");
     }
@@ -201,6 +204,7 @@ const Admin = () => {
   };
   const fromSubmitCall = () => {
     const res = {
+      classToBeAdmitted: class1,
       Name: name,
       "Date of Birth": DateR(new Date(age).toLocaleDateString()),
       Gender: gender == 1 ? "Boy" : "Girl",
@@ -304,6 +308,7 @@ const Admin = () => {
         setIsLoading(false);
       });
   };
+  const [class1, setClass1] = useState(0);
   const componentRef = React.useRef();
   if (pageState === 1 || pageState == 1) {
     return (
@@ -332,7 +337,7 @@ const Admin = () => {
                 </div>
               </div>
               <div className="row">
-                <div className="col col-12">
+                <div className="col col-md-6">
                   <TextInput
                     lable="Admission Year"
                     type="text"
@@ -341,6 +346,32 @@ const Admin = () => {
                     placeholder="Enter Admission Year"
                     isRequired={true}
                   />
+                </div>
+                <div className="col col-md-6">
+                  <label for="class" class="form-label">
+                    I want take admission for class
+                    <span style={{ marginLeft: "8px", color: "red" }}>*</span>
+                  </label>
+                  <div>
+                    <select
+                      name="class"
+                      id="lang"
+                      class="class"
+                      value={class1}
+                      onChange={(e) => {
+                        setClass1(e.target.value);
+                      }}
+                    >
+                      <option value="0">Choose value</option>
+                      <option value="1">কথাকলি(Age 3+)</option>
+                      <option value="2">হাসিখুশি (Age 4+)</option>
+                      <option value="3">কুসুমকলি (Age 5+)</option>
+                      <option value="4">প্রথম শ্রেণী (Age 6+)</option>
+                      <option value="5">দ্বিতীয় শ্রেণী (Age7+)</option>
+                      <option value="6">তৃতীয় শ্রেণি (Age 8+)</option>
+                      <option value="7">চতুর্থ শ্রেণি (Age 9+)</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               {/*!!!!!!!!!!!!!!!!!!!!!!!!!!!! Second Row !!!!!!!!!!!!!!!!!*/}
@@ -1571,6 +1602,38 @@ const Admin = () => {
               <p>Date: {DateR(new Date().toLocaleDateString())}</p>
             </div>
           </div>
+
+          <div class="accordion nextSection" id="accordionExample">
+            <div class="accordion-item">
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {studentPicture ? (
+                    <img src={studentPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {fatherPicture ? (
+                    <img src={fatherPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col2 col-12 col-md-6">
+                  {motherPicture ? (
+                    <img src={motherPicture} className="uploadPic" />
+                  ) : (
+                    <div className="uploadPicd"></div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="accordion" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingOne">
@@ -1598,6 +1661,32 @@ const Admin = () => {
                     type="text"
                     value={""}
                     setValue={setName}
+                    placeholder="Enter Student's Name"
+                    isRequired={true}
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col2 col-12">
+                  <TextInput2
+                    lable="I want take admission for class"
+                    type="text"
+                    value={
+                      class1 == 1
+                        ? "কথাকলি(Age 3+)"
+                        : class1 == 2
+                        ? "হাসিখুশি (Age 4+)"
+                        : class1 == 3
+                        ? "কুসুমকলি (Age 5+)"
+                        : class1 == 4
+                        ? "প্রথম শ্রেণী (Age 6+)"
+                        : class1 == 5
+                        ? "দ্বিতীয় শ্রেণী (Age7+)"
+                        : class1 == 6
+                        ? "তৃতীয় শ্রেণি (Age 8+)"
+                        : "চতুর্থ শ্রেণি (Age 9+)"
+                    }
                     placeholder="Enter Student's Name"
                     isRequired={true}
                   />
@@ -2374,13 +2463,6 @@ const Admin = () => {
             <div class="accordion-item">
               <div className="row">
                 <div className="col2 col-12 col-md-6">
-                  {studentPicture ? (
-                    <img src={studentPicture} className="uploadPic" />
-                  ) : (
-                    <div className="uploadPicd"></div>
-                  )}
-                </div>
-                <div className="col2 col-12 col-md-6">
                   <div className="signature">
                     <p className="signaturep">Student Signature</p>
                   </div>
@@ -2388,26 +2470,12 @@ const Admin = () => {
               </div>
               <div className="row">
                 <div className="col2 col-12 col-md-6">
-                  {fatherPicture ? (
-                    <img src={fatherPicture} className="uploadPic" />
-                  ) : (
-                    <div className="uploadPicd"></div>
-                  )}
-                </div>
-                <div className="col2 col-12 col-md-6">
                   <div className="signature">
                     <p className="signaturep">Father's Signature</p>
                   </div>
                 </div>
               </div>
               <div className="row">
-                <div className="col2 col-12 col-md-6">
-                  {motherPicture ? (
-                    <img src={motherPicture} className="uploadPic" />
-                  ) : (
-                    <div className="uploadPicd"></div>
-                  )}
-                </div>
                 <div className="col2 col-12 col-md-6">
                   <div className="signature">
                     <p className="signaturep">Mother's Signature</p>
