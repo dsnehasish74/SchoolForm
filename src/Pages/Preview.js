@@ -76,17 +76,25 @@ const MyDocument = () => {
             classToBeAdmitted:
               doc.data()["classToBeAdmitted"] == 1
                 ? "কথাকলি(Age 3+)"
-                : doc.data()["classToBeAdmitted"]
+                : doc.data()["classToBeAdmitted"] == 2
                 ? "হাসিখুশি (Age 4+)"
-                : doc.data()["classToBeAdmitted"]
+                : doc.data()["classToBeAdmitted"] == 3
                 ? "কুসুমকলি (Age 5+)"
-                : doc.data()["classToBeAdmitted"]
+                : doc.data()["classToBeAdmitted"] == 4
                 ? "প্রথম শ্রেণী (Age 6+)"
-                : doc.data()["classToBeAdmitted"]
+                : doc.data()["classToBeAdmitted"] == 5
                 ? "দ্বিতীয় শ্রেণী (Age7+)"
-                : doc.data()["classToBeAdmitted"]
+                : doc.data()["classToBeAdmitted"] == 6
                 ? "তৃতীয় শ্রেণি (Age 8+)"
-                : "চতুর্থ শ্রেণি (Age 9+)",
+                : doc.data()["classToBeAdmitted"] == 7
+                ? "চতুর্থ শ্রেণি (Age 9+)"
+                : doc.data()["classToBeAdmitted"] == 8
+                ? "পঞ্চম শ্রেণী (Age 10+)"
+                : doc.data()["classToBeAdmitted"] == 9
+                ? "ষষ্ঠ শ্রেণী (Age 11+)"
+                : doc.data()["classToBeAdmitted"] == 10
+                ? "সপ্তম শ্রেণী(Age 12+)"
+                : "অষ্টম শ্রেণী (Age 13+)",
             Name: doc.data()["Name"],
             "Date of Birth": doc.data()["Date of Birth"],
             Gender: doc.data()["Gender"],
@@ -270,6 +278,14 @@ const MyDocument = () => {
             <option value="তৃতীয় শ্রেণি (Age 8+)">তৃতীয় শ্রেণি (Age 8+)</option>
             <option value="চতুর্থ শ্রেণি (Age 9+)">
               চতুর্থ শ্রেণি (Age 9+)
+            </option>
+            <option value="পঞ্চম শ্রেণী (Age 10+)">
+              পঞ্চম শ্রেণী (Age 10+)
+            </option>
+            <option value="ষষ্ঠ শ্রেণী (Age 11+)">ষষ্ঠ শ্রেণী (Age 11+)</option>
+            <option value="সপ্তম শ্রেণী(Age 12+)">সপ্তম শ্রেণী(Age 12+)</option>
+            <option value="অষ্টম শ্রেণী (Age 13+)">
+              অষ্টম শ্রেণী (Age 13+)
             </option>
           </select>
           <div style={{ width: "100%", height: "100px" }}></div>

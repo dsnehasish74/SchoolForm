@@ -263,7 +263,15 @@ const Adminp = (props) => {
                         ? "দ্বিতীয় শ্রেণী (Age7+)"
                         : class1 == 6
                         ? "তৃতীয় শ্রেণি (Age 8+)"
-                        : "চতুর্থ শ্রেণি (Age 9+)"
+                        : class1 == 7
+                        ? "চতুর্থ শ্রেণি (Age 9+)"
+                        : class1 == 8
+                        ? "পঞ্চম শ্রেণী (Age 10+)"
+                        : class1 == 9
+                        ? "ষষ্ঠ শ্রেণী (Age 11+)"
+                        : class1 == 10
+                        ? "সপ্তম শ্রেণী(Age 12+)"
+                        : "অষ্টম শ্রেণী (Age 13+)"
                     }
                     placeholder="Enter Student's Name"
                     isRequired={true}

@@ -370,6 +370,10 @@ const Admin = () => {
                       <option value="5">দ্বিতীয় শ্রেণী (Age7+)</option>
                       <option value="6">তৃতীয় শ্রেণি (Age 8+)</option>
                       <option value="7">চতুর্থ শ্রেণি (Age 9+)</option>
+                      <option value="8">পঞ্চম শ্রেণী (Age 10+)</option>
+                      <option value="9">ষষ্ঠ শ্রেণী (Age 11+)</option>
+                      <option value="10">সপ্তম শ্রেণী(Age 12+)</option>
+                      <option value="11">অষ্টম শ্রেণী (Age 13+)</option>
                     </select>
                   </div>
                 </div>
@@ -1685,7 +1689,15 @@ const Admin = () => {
                         ? "দ্বিতীয় শ্রেণী (Age7+)"
                         : class1 == 6
                         ? "তৃতীয় শ্রেণি (Age 8+)"
-                        : "চতুর্থ শ্রেণি (Age 9+)"
+                        : class1 == 7
+                        ? "চতুর্থ শ্রেণি (Age 9+)"
+                        : class1 == 8
+                        ? "পঞ্চম শ্রেণী (Age 10+)"
+                        : class1 == 9
+                        ? "ষষ্ঠ শ্রেণী (Age 11+)"
+                        : class1 == 10
+                        ? "সপ্তম শ্রেণী(Age 12+)"
+                        : "অষ্টম শ্রেণী (Age 13+)"
                     }
                     placeholder="Enter Student's Name"
                     isRequired={true}
